@@ -3,10 +3,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Nature from "@mui/icons-material/Nature";
 
-// ✅ Gunakan path relatif
-import Img from './components/grove-logo.png';
-
-export const NavBar = () => {
+export const Navbar = () => {
     const navigate = useNavigate();
 
     const handleMyGardenClick = () => {
@@ -16,7 +13,7 @@ export const NavBar = () => {
     return(
         <nav className="nav">
             <img 
-                src={Img} 
+                src="components/grove-logo.png"
                 style={{width:'174px', height:'80px'}} 
                 alt="Grove Logo"
             />
@@ -34,4 +31,4 @@ export const NavBar = () => {
     );
 }
 
-export default NavBar;
+export default Navbar;

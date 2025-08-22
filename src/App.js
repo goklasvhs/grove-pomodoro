@@ -15,6 +15,7 @@ function App() {
   const [breakMinutes, setBreakMinutes] = useState(5);
 
   return (
+    <div className="body">
     <Router>
       <main>
         <NavBar />
@@ -34,6 +35,7 @@ function App() {
         <PlayMusic />
       </main>
     </Router>
+    </div>
   );
 }
 

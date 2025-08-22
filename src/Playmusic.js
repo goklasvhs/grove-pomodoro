@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@mui/material";
-import Audio from './components/audio.mp3';
-
 
 function PlayMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,7 +31,7 @@ function PlayMusic() {
         onEnded={() => setIsPlaying(false)}
         preload="metadata"
       >
-        <source src={Audio} />
+        <source src="components/audio.mp3" />
       </audio>
       
       <Button 

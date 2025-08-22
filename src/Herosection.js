@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 
-// ✅ Gunakan path relatif atau pindahkan ke folder public
-import defaultImage from './components/default.png';
-import sadImage from './components/sad.png';
-import focusImage from './components/focus.png';
+// ❌ HAPUS BARIS-BARIS INI:
+// import defaultImage from './components/default.png';
+// import sadImage from './components/sad.png';
+// import focusImage from './components/focus.png';
 
 // Component untuk LinearProgress dengan label
 function LinearProgressWithLabel({ value }) {
@@ -45,9 +45,9 @@ function Herosection() {
     const [alertOpen, setAlertOpen] = useState(true);
     const [progress, setProgress] = useState(35); // Default progress value
     
-    // Function to determine tomato image based on health
+    // ✅ Ubah function ini untuk menggunakan path public
     const getTomatoImage = () => {
-        return progress >= 50 ? defaultImage : sadImage;
+        return progress >= 50 ? "/components/default.png" : "/components/sad.png";
     };
     
     // Function to get tomato status message

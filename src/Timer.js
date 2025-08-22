@@ -3,9 +3,12 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 import { Button, Typography, Chip, Box } from '@mui/material';
 import { PlayArrow, Pause, Refresh } from '@mui/icons-material';
-import defaultImage from './components/default.png';
-import sadImage from './components/sad.png';
-import focusImage from './components/focus.png';
+
+// ❌ HAPUS SEMUA IMPORT GAMBAR INI:
+// import defaultImage from './components/default.png';
+// import sadImage from './components/sad.png';
+// import focusImage from './components/focus.png';
+
 import SettingsButton from './SettingsButton';
 import SettingsContext from './SettingsContext';
 
@@ -41,7 +44,7 @@ function Timer(){
         }
     }
 
-    // Get image based on mode
+    // ✅ Get image based on mode - menggunakan path public
     function getModeImage(currentMode) {
         switch (currentMode) {
             case 'work':
