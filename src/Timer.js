@@ -1,13 +1,30 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { Button, Typography, Chip, Box } from '@mui/material';
-import { PlayArrow, Pause, Refresh } from '@mui/icons-material';
-
-// ❌ HAPUS SEMUA IMPORT GAMBAR INI:
-// import defaultImage from './components/default.png';
-// import sadImage from './components/sad.png';
-// import focusImage from './components/focus.png';
+import { 
+    Button, 
+    Typography, 
+    Chip, 
+    Box, 
+    TextField, 
+    Paper, 
+    List, 
+    ListItem, 
+    ListItemText, 
+    IconButton,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails
+} from '@mui/material';
+import { 
+    PlayArrow, 
+    Pause, 
+    Refresh, 
+    Add, 
+    Delete, 
+    ExpandMore,
+    Notes as NotesIcon
+} from '@mui/icons-material';
 
 import SettingsButton from './SettingsButton';
 import SettingsContext from './SettingsContext';
@@ -18,17 +35,36 @@ const green = '#279F00';
 
 function Timer(){
     const settingsInfo = useContext(SettingsContext);
-    const [isPaused, setIsPaused] = useState(true); // Start paused
-    const [mode, setMode] = useState('work'); // 'work', 'shortBreak', 'longBreak'
+    const [isPaused, setIsPaused] = useState(true);
+    const [mode, setMode] = useState('work');
     const [secondsLeft, setSecondsLeft] = useState(0);
-    const [cycleCount, setCycleCount] = useState(0); // Track completed work sessions
-    const [totalCycles, setTotalCycles] = useState(0); // Track completed full cycles
-    const [isCompleted, setIsCompleted] = useState(false); // Track if current cycle is completed
+    const [cycleCount, setCycleCount] = useState(0);
+    const [totalCycles, setTotalCycles] = useState(0);
+    const [isCompleted, setIsCompleted] = useState(false);
+    
+    // Notes state
+    const [currentNote, setCurrentNote] = useState('');
+    const [notes, setNotes] = useState([]);
+    const [showNotes, setShowNotes] = useState(false);
 
     const secondsLeftRef = useRef(secondsLeft);
     const isPausedRef = useRef(isPaused);
     const modeRef = useRef(mode);
     const cycleCountRef = useRef(cycleCount);
+
+    // Initialize notes from cache simulation (using state)
+    useEffect(() => {
+        // In a real app, this would be: const savedNotes = JSON.parse(localStorage.getItem('pomodoroNotes') || '[]');
+        // For this environment, we'll start with empty notes
+        const savedNotes = [];
+        setNotes(savedNotes);
+    }, []);
+
+    // Save notes to cache simulation whenever notes change
+    useEffect(() => {
+        // In a real app, this would be: localStorage.setItem('pomodoroNotes', JSON.stringify(notes));
+        // For this environment, notes persist only during the session
+    }, [notes]);
 
     // Get duration based on mode
     function getModeDuration(currentMode) {
@@ -38,13 +74,13 @@ function Timer(){
             case 'shortBreak':
                 return settingsInfo.breakMinutes * 60;
             case 'longBreak':
-                return 30 * 60; // 30 minutes for long break
+                return 30 * 60;
             default:
                 return settingsInfo.workMinutes * 60;
         }
     }
 
-    // ✅ Get image based on mode - menggunakan path public
+    // Get image based on mode
     function getModeImage(currentMode) {
         switch (currentMode) {
             case 'work':
@@ -72,6 +108,34 @@ function Timer(){
         }
     }
 
+    // Add note function
+    const addNote = () => {
+        if (currentNote.trim() !== '') {
+            const newNote = {
+                id: Date.now(),
+                text: currentNote.trim(),
+                timestamp: new Date().toLocaleString(),
+                mode: mode,
+                cycle: totalCycles + 1
+            };
+            setNotes(prev => [newNote, ...prev]);
+            setCurrentNote('');
+        }
+    };
+
+    // Delete note function
+    const deleteNote = (noteId) => {
+        setNotes(prev => prev.filter(note => note.id !== noteId));
+    };
+
+    // Handle Enter key for adding notes
+    const handleNoteKeyPress = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            addNote();
+        }
+    };
+
     function switchMode() {
         let nextMode;
         let nextCycleCount = cycleCountRef.current;
@@ -81,21 +145,19 @@ function Timer(){
             setCycleCount(nextCycleCount);
             cycleCountRef.current = nextCycleCount;
             
-            // After 2 work sessions, long break. Otherwise, short break
             if (nextCycleCount % 2 === 0) {
                 nextMode = 'longBreak';
             } else {
                 nextMode = 'shortBreak';
             }
         } else if (modeRef.current === 'longBreak') {
-            // After long break, check if cycle is complete
             if (cycleCountRef.current >= 2) {
                 setIsCompleted(true);
                 setTotalCycles(prev => prev + 1);
-                return; // Don't continue, wait for user to restart
+                return;
             }
             nextMode = 'work';
-        } else { // shortBreak
+        } else {
             nextMode = 'work';
         }
 
@@ -255,6 +317,72 @@ function Timer(){
             }}>
                 {minutes}:{seconds}
             </div>
+
+            {/* Notes Section */}
+            <Box sx={{ width: "100%", marginTop: 2 }}>
+                <TextField 
+                    value={currentNote}
+                    onChange={(e) => setCurrentNote(e.target.value)}
+                    onKeyPress={handleNoteKeyPress}
+                    id="note-input" 
+                    label="Add a note or task..." 
+                    variant="filled" 
+                    sx={{ width: "100%" }}
+                    multiline
+                    maxRows={3}
+                    InputProps={{
+                        endAdornment: (
+                            <IconButton 
+                                onClick={addNote}
+                                disabled={!currentNote.trim()}
+                                color="primary"
+                            >
+                                <Add />
+                            </IconButton>
+                        )
+                    }}
+                />
+            </Box>
+
+            {/* Notes Display */}
+            {notes.length > 0 && (
+                <Box sx={{ width: "100%", marginTop: 2 }}>
+                    <Accordion expanded={showNotes} onChange={() => setShowNotes(!showNotes)}>
+                        <AccordionSummary expandIcon={<ExpandMore />}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <NotesIcon />
+                                <Typography>Notes ({notes.length})</Typography>
+                            </Box>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Paper sx={{ maxHeight: 200, overflow: 'auto' }}>
+                                <List dense>
+                                    {notes.map((note) => (
+                                        <ListItem 
+                                            key={note.id}
+                                            secondaryAction={
+                                                <IconButton 
+                                                    edge="end" 
+                                                    aria-label="delete"
+                                                    onClick={() => deleteNote(note.id)}
+                                                    size="small"
+                                                >
+                                                    <Delete />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <ListItemText
+                                                primary={note.text}
+                                                secondary={`${note.timestamp} • Cycle ${note.cycle} • ${note.mode === 'work' ? 'Focus' : note.mode === 'shortBreak' ? 'Short Break' : 'Long Break'}`}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Paper>
+                        </AccordionDetails>
+                    </Accordion>
+                </Box>
+            )}
 
             {/* Buttons */}
             <div className='button-container' style={{ marginTop: 20 }}>
