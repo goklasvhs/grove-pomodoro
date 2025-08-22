@@ -7,9 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
-import defaultImage from 'C:/Users/andre/testing/myapp/src/components/default.png';
-import sadImage from 'C:/Users/andre/testing/myapp/src/components/sad.png';
-import focusImage from 'C:/Users/andre/testing/myapp/src/components/focus.png';
+
+// ✅ Gunakan path relatif atau pindahkan ke folder public
+import defaultImage from './components/default.png';
+import sadImage from './components/sad.png';
+import focusImage from './components/focus.png';
 
 // Component untuk LinearProgress dengan label
 function LinearProgressWithLabel({ value }) {
@@ -70,7 +72,7 @@ function Herosection() {
             flexDirection: 'column',
             alignItems: 'center',
             padding: '20px',
-            backgroundColor: '#f8f9fa',
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
             borderRadius: '12px',
             margin: '20px 0',
             boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
@@ -81,7 +83,7 @@ function Herosection() {
                 color: '#303135',
                 fontWeight: 'bold'
             }}>
-                My Garden
+                Your Tomato
             </Typography>
             
             {/* Tomato Status Message */}
@@ -158,7 +160,9 @@ function Herosection() {
                         Complete Session (+10%)
                     </Button>
                 </Box>
-                <Typography style={{marginTop:"8px", color:'#'}}><body1>For testing purposes</body1></Typography>
+                <Typography variant="body1" style={{marginTop:"8px", color:'#666'}}>
+                    For testing purposes
+                </Typography>
             </div>
 
             {/* Alert Message */}

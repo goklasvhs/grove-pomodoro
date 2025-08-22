@@ -2,7 +2,9 @@ import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Nature from "@mui/icons-material/Nature";
-import Img from 'C:/Users/andre/testing/myapp/src/components/grove-logo.png';
+
+// ✅ Gunakan path relatif
+import Img from './components/grove-logo.png';
 
 export const NavBar = () => {
     const navigate = useNavigate();
@@ -21,7 +23,7 @@ export const NavBar = () => {
             <div className="menuItems">
                 <Button
                     variant="contained"
-                    color="white"
+                    color="inherit"
                     startIcon={<Nature />}
                     onClick={handleMyGardenClick}
                 >

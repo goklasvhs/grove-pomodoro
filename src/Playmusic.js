@@ -41,7 +41,7 @@ function PlayMusic() {
         color={isPlaying ? "inherit" : "secondary"}
         onClick={handleMusicToggle}
         size="large"
-        sx={{ width:'560px', maxWidth:'560px'}}
+        sx={{ width:'540px', maxWidth:'540px'}}
       >
         {isPlaying ? "Stop Music" : "Play Music"}
       </Button>

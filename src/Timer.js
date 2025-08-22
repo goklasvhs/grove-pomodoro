@@ -3,9 +3,9 @@ import { CircularProgressbarWithChildren, buildStyles } from 'react-circular-pro
 import 'react-circular-progressbar/dist/styles.css';
 import { Button, Typography, Chip, Box } from '@mui/material';
 import { PlayArrow, Pause, Refresh } from '@mui/icons-material';
-import focusImage from 'C:/Users/andre/testing/myapp/src/components/focus.png';
-import restImage from 'C:/Users/andre/testing/myapp/src/components/rest.png';
-import defaultImage from 'C:/Users/andre/testing/myapp/src/components/default.png';
+import defaultImage from './components/default.png';
+import sadImage from './components/sad.png';
+import focusImage from './components/focus.png';
 import SettingsButton from './SettingsButton';
 import SettingsContext from './SettingsContext';
 
@@ -45,13 +45,13 @@ function Timer(){
     function getModeImage(currentMode) {
         switch (currentMode) {
             case 'work':
-                return focusImage;
+                return '/components/focus.png';
             case 'shortBreak':
-                return restImage;
+                return '/components/rest.png';
             case 'longBreak':
-                return defaultImage;
+                return '/components/default.png';
             default:
-                return focusImage;
+                return '/components/focus.png';
         }
     }
 
