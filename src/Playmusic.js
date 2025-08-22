@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@mui/material";
-import Audio from 'C:/Users/andre/testing/myapp/src/components/audio.mp3';
+import Audio from './components/audio.mp3';
 
 
 function PlayMusic() {
